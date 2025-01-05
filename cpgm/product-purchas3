@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品购买</title>
+    <link rel="stylesheet" href="styles-cpgm.css">
+</head>
+<body>
+    <div class="purchase-container">
+        <h1>产品购买</h1>
+        <p>这里是产品的购买页面。你可以在这里添加购买选项、价格信息、购物车功能等，方便客户进行购买。</p>
+        <!-- 添加购买表单或购买按钮等 -->
+        <a href="product-intro.html" class="back-button">返回产品介绍</a>
+    </div>
+</body>
+</html>
