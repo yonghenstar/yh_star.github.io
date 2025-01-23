@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// 简单的用户存储（在实际项目中应使用数据库）
-$users = isset($_SESSION['users']) ? $_SESSION['users'] : array();
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // 简单的用户存储（在实际项目中应使用数据库）
+    $users = isset($_SESSION['users']) ? $_SESSION['users'] : array();
+
     $email = $_POST['email'];
     $password = $_POST['password'];
     
@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     echo '注册成功';
 } else {
-    echo '无效的请求方法';
+    // 返回405错误
+    http_response_code(405);
+    echo '方法不允许';
 }
 ?>
