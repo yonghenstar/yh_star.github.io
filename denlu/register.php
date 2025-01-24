@@ -1,21 +1,20 @@
 <?php
-session_start();
+require 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // 简单的用户存储（在实际项目中应使用数据库）
-    $users = isset($_SESSION['users']) ? $_SESSION['users'] : array();
-
     $email = $_POST['email'];
-    $password = $_POST['password'];
-    
-    // 添加用户到存储中
-    $users[] = array('email' => $email, 'password' => $password);
-    $_SESSION['users'] = $users;
-    
-    echo '注册成功';
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // 对密码进行哈希
+
+    $stmt = $db->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
+    $stmt->bindValue(':email', $email, SQLITE3_TEXT);
+    $stmt->bindValue(':password', $password, SQLITE3_TEXT);
+
+    if ($stmt->execute()) {
+        echo '注册成功';
+    } else {
+        echo '注册失败：' . $db->lastErrorMsg();
+    }
 } else {
-    // 返回405错误
-    http_response_code(405);
-    echo '方法不允许';
+    echo '无效的请求方法';
 }
 ?>
