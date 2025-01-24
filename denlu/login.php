@@ -1,26 +1,21 @@
 <?php
-session_start();
+require 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // 简单的用户存储（在实际项目中应使用数据库）
-    $users = isset($_SESSION['users']) ? $_SESSION['users'] : array();
-
     $email = $_POST['email'];
     $password = $_POST['password'];
-    
-    // 查找用户
-    foreach ($users as $user) {
-        if ($user['email'] == $email && $user['password'] == $password) {
-            $_SESSION['user'] = $user;
-            echo '登录成功';
-            exit();
-        }
+
+    $stmt = $db->prepare('SELECT * FROM users WHERE email = :email');
+    $stmt->bindValue(':email', $email, SQLITE3_TEXT);
+    $result = $stmt->execute();
+    $user = $result->fetchArray(SQLITE3_ASSOC);
+
+    if ($user && password_verify($password, $user['password'])) {
+        echo '登录成功';
+    } else {
+        echo '邮箱或密码错误';
     }
-    
-    echo '邮箱或密码无效';
 } else {
-    // 返回405错误
-    http_response_code(405);
-    echo '方法不允许';
+    echo '无效的请求方法';
 }
 ?>
